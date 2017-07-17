@@ -4,5 +4,5 @@ app = Flask(__name__)
 
 @app.route('/data')
 def hello_world():
-    tweets = getTweets.search()
+    tweets = getTweets.search("#MTAFail")
     return tweets
