@@ -12,12 +12,11 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 
-def search():
-  search = "#MTAFail"
+def search(query):
   pageNum = 1
   json_tweets = ""
   allTweets = []
-  tweets = tweepy.Cursor(api.search, "#MTAFail", count=100).items();
+  tweets = tweepy.Cursor(api.search, query, count=100).items();
   for tweet in tweets:
       allTweets.append(tweet.text)
       json_str = json.dumps(tweet._json)
