@@ -16,8 +16,11 @@ def search():
   search = "#MTAFail"
   pageNum = 1
   json_tweets = ""
-  tweets = tweepy.Cursor(api.search, "#MTAFail").items();
+  allTweets = []
+  tweets = tweepy.Cursor(api.search, "#MTAFail", count=100).items();
   for tweet in tweets:
+      allTweets.append(tweet.text)
       json_str = json.dumps(tweet._json)
       json_tweets += json_str
+  print(len(allTweets))
   return json_tweets
