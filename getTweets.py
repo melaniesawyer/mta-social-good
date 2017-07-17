@@ -4,28 +4,20 @@ ACCESS_TOKEN = "2898973021-Byv3nraXEwwgknKdy4NC153ymNJfTWiTwWe0qt0"
 ACCESS_TOKEN_SECRET = "efEMBl9P64VEsBGpzLCl2clVGoj7aTnqaRpnnoakVTmkJ" 
 
 import tweepy
+import json
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 api = tweepy.API(auth)
 
-public_tweets = api.home_timeline()
-for tweet in public_tweets:
-    print tweet.text
 
-
-search = "#MTAFail"
-result = api.search(search)
-for tweet in result:
-	print tweet.text
-
-search = "#MTASucks"
-result = api.search(search)
-for tweet in result:
-	print tweet.text
-
-search = "MTAFail"
-result = api.search(search)
-for tweet in result:
-	print tweet.text
+def search():
+  search = "#MTAFail"
+  pageNum = 1
+  json_tweets = ""
+  tweets = tweepy.Cursor(api.search, "#MTAFail").items();
+  for tweet in tweets:
+      json_str = json.dumps(tweet._json)
+      json_tweets += json_str
+  return json_tweets
