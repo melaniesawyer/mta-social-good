@@ -36,26 +36,25 @@ div.tooltip {
       height = 1160;
 
   var projection = d3.geoMercator()
-    .scale(10000)
-    .translate([width / 2, height / 2]);
+      .scale(10000)
+      .translate([width / 2, height / 2]);
 
   var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+      .attr("width", width)
+      .attr("height", height);
 
 
-    //Determine where to center map.
-	var center = d3.geoCentroid(geoData);
-    projection.center(center);
-
-    // now you can create new path function with 
-    // correctly centered projection
-    var path = d3.geoPath().projection(projection);
-
-	var boroughCodes = [];
-	var tweetVolumes = [];
-
-  	d3.csv("/static/tweet-volume-borough.csv", function(data) {
+  //Determine where to center map.
+  var center = d3.geoCentroid(geoData);
+  projection.center(center);
+ 
+  var path = d3.geoPath().projection(projection);
+  
+  //Colorizing boroughs
+  var boroughCodes = [];
+  var tweetVolumes = [];
+  d3.csv("/static/tweet-volume-borough.csv", function(data) {
+	  	//add data from csv files to arrays
 		data.map(function(d) {
 			boroughCodes.push(d.BoroughName);
 			tweetVolumes.push(d.tweets);
@@ -71,7 +70,7 @@ div.tooltip {
       .append("path")
       .attr("d", path)
 	  .style("fill", function(d) {
-			return colors[tweetVolumes[d.features.boroughCode]];
+			return colors[0];
   })
   </script>
 </body>
