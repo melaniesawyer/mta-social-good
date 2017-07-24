@@ -2,11 +2,36 @@
 <head>
   <title>A D3 map</title>
   <script src='https://d3js.org/d3.v4.min.js'></script>
+  <script type="text/javascript" src="http://d3js.org/queue.v1.min.js"></script>
 </head>
+<style>
+.path{
+	stroke: white;
+	stroke-width: 1px;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 150px;                  
+  height: 25px;                 
+  padding: 2px;             
+  font-size: 10px;     
+  background: #FFFFE0;
+  border: 1px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}   
+</style>
 <body>
   <script>
+  var colors = ["#ffcb40", "#ffba00", "#ff7d73", "#ff4e40", "#ff1300"]
 
-var input1 = {{ input|safe }}
+  var div = d3.select("body").append("div")   
+  .attr("class", "tooltip")               
+  .style("opacity", 0);
+
+  var geoData = {{ input|safe }}
   var width = 960, 
       height = 1160;
 
@@ -19,22 +44,35 @@ var input1 = {{ input|safe }}
     .attr("height", height);
 
 
-    // after loading geojson, use d3.geo.centroid to find out 
-    // where you need to center your map
-    var center = d3.geoCentroid(input1);
+    //Determine where to center map.
+	var center = d3.geoCentroid(geoData);
     projection.center(center);
 
     // now you can create new path function with 
     // correctly centered projection
     var path = d3.geoPath().projection(projection);
-	console.log(input1.features);
+
+	var boroughCodes = [];
+	var tweetVolumes = [];
+
+  	d3.csv("/static/tweet-volume-borough.csv", function(data) {
+		data.map(function(d) {
+			boroughCodes.push(d.BoroughName);
+			tweetVolumes.push(d.tweets);
+		})
+		console.log(boroughCodes);
+		console.log(tweetVolumes);
+	});
+	console.log(geoData.features.properties);
     // and finally draw the actual polygons
     svg.selectAll("path")
-      .data(input1.features)
+      .data(geoData.features)
       .enter()
       .append("path")
-      .attr("d", path);
-
+      .attr("d", path)
+	  .style("fill", function(d) {
+			return colors[tweetVolumes[d.features.boroughCode]];
+  })
   </script>
 </body>
 </html>

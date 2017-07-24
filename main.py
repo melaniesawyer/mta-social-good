@@ -10,7 +10,8 @@ def data():
 
 @app.route('/')
 def index():
-    with open('nyc.json') as data_file:
+    with open('data/nyc.json') as data_file:
         data = json.load(data_file)
-        print(data)
-    return render_template("index.html", input=data)
+    with open('data/tweet-volume-borough.csv') as other_data:
+        tweet_volume = other_data
+    return render_template("index.html", input=data, tweets=tweet_volume)

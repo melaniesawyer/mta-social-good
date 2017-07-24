@@ -18,8 +18,6 @@ def search(query):
   allTweets = []
   tweets = tweepy.Cursor(api.search, query, count=100).items();
   for tweet in tweets:
-      if (tweet.place != None):
-          print(tweet.place)
       allTweets.append(tweet.text)
       json_str = json.dumps(tweet._json)
       json_tweets += json_str
