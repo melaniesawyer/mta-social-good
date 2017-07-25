@@ -18,8 +18,10 @@ def search(query):
   allTweets = []
   tweets = tweepy.Cursor(api.search, query, count=100).items();
   for tweet in tweets:
-      allTweets.append(tweet.text)
-      json_str = json.dumps(tweet._json)
-      json_tweets += json_str
-  print(len(allTweets))
+      print(tweet)
+     # allTweets.append(tweet.text)
+     # json_str = json.dumps(tweet._json)
+     # json_tweets += json_str
+ # print(len(allTweets))
+#  tweetData = {allTweets: js}
   return json_tweets
